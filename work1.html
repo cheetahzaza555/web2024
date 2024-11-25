@@ -22,6 +22,21 @@
         #quiz-container,#submit-btn {
             display: none; 
         }
+        .question-box {
+            background-color: rgb(245, 243, 243); 
+            border-radius: 12px; 
+            padding: 20px; 
+            margin-bottom: 20px; 
+        }
+
+        .form-check {
+            margin-bottom: 10px; 
+        }
+
+
+        .form-check-input:checked + .form-check-label {
+            color: #0d6efd; 
+        }
     </style>
 </head>
 <body>
@@ -44,7 +59,8 @@
                 function displayQuiz() {
                     const quizContainer = $("#quiz-container");
                     $.each(quizData, function(index, item) {
-                        const questionDiv = $("<div>").addClass("mb-4");
+                        // สร้าง div สำหรับคำถาม
+                        const questionDiv = $("<div>").addClass("question-box");
     
                         const questionTitle = $("<h4>").text(`${index + 1}. ${item.title}`);
                         questionDiv.append(questionTitle);
@@ -69,6 +85,7 @@
                     });
                 }
 
+                // ฟังก์ชันในการตรวจคำตอบ
                 function checkAnswers() {
                     let score = 0;
                     $.each(quizData, function(index, item) {
@@ -80,6 +97,7 @@
                     alert(`คุณได้คะแนน ${score} จาก ${quizData.length}`);
                 }
 
+                // ตรวจสอบการเลือกคำตอบครบทุกข้อ
                 function checkAllAnswered() {
                     let allAnswered = true;
                     $.each(quizData, function(index) {
@@ -88,6 +106,7 @@
                         }
                     });
 
+                    // แสดงปุ่มตรวจคำตอบหากผู้ใช้เลือกครบทุกข้อ
                     if (allAnswered) {
                         $('#submit-btn').fadeIn();
                     } else {
@@ -95,17 +114,21 @@
                     }
                 }
     
+                // เมื่อคลิกปุ่ม "เริ่มทำข้อสอบ"
                 $('#show').click(function() {
                     $(this).hide();
                     $('#quiz-container').fadeIn();
                 });
     
+                // แสดงข้อสอบ
                 displayQuiz();
 
+                // ตรวจสอบการตอบทุกข้อ
                 $('input[type="radio"]').change(function() {
                     checkAllAnswered();
                 });
 
+                // เมื่อคลิกปุ่ม "ตรวจคำตอบ"
                 $('#submit-btn').click(function() {
                     checkAnswers();
                 });
