@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบทดสอบออนไลน์</title>
+    <link href="https://cdn.jsdelivr.net/npm/@mdi/font/css/materialdesignicons.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/vuetify@2.6.5/dist/vuetify.min.css" rel="stylesheet">
+    <style>
+
+        .v-btn {
+            font-weight: bold;
+            border-radius: 50px; 
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+
+        .v-card-title, .v-card-subtitle {
+            font-size: 1.5em;
+            font-weight: 500;
+            text-align: center;
+            color: #1976D2;
+        }
+
+
+        .v-card {
+            box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            background-color: #fafafa;
+        }
+
+        body {
+            background-color: #f5f5f5;
+        }
+
+        .welcome-card {
+            background: #1976D2;
+            color: white;
+        }
+
+        .welcome-card .v-btn {
+            font-size: 1.2em;
+            border-radius: 25px;
+            background-color: #0d47a1;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .score-card {
+            background: #e3f2fd;
+            color: #0d47a1;
+        }
+
+
+        .v-btn.large {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+
+        .d-flex-center {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+
+        .v-btn:hover {
+            transform: scale(1.1); 
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2); 
+            background-color: #5c6bc0; 
+        }
+
+        .v-btn:active {
+            transform: scale(0.98); 
+        }
+
+
+        .v-icon {
+            transition: transform 0.3s ease;
+        }
+
+        .v-btn:hover .v-icon {
+            transform: rotate(360deg); 
+        }
+
+    </style>
+</head>
+<body>
+    <div id="app">
+        <v-app>
+            <v-container v-if="!quizStarted" class="d-flex-center" fluid>
+                <v-row justify="center" align="center">
+                    <v-col cols="12" md="6">
+                        <v-card class="welcome-card">
+                            <v-card-title class="d-flex justify-center align-center text-center">ยินดีต้อนรับสู่แบบทดสอบออนไลน์</v-card-title>
+                            <v-card-text class="text-center">
+                                <v-btn @click="startQuiz" color="primary" block class="large">
+                                    <v-icon left>mdi-play-circle-outline</v-icon>
+                                    เริ่มทำแบบทดสอบ
+                                </v-btn>
+                            </v-card-text>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-container>
+
+
+            <v-container v-if="quizStarted && !quizFinished" fluid>
+                <v-row style="margin-top: 10%;">
+                    <v-col cols="12" md="8" offset-md="2">
+                        <v-card class="quiz-container">
+                            <v-card-title class="text-center">
+                                <span class="headline">ข้อที่ {{ currentQuestionIndex + 1 }}: {{ currentQuestion.question }}</span>
+                            </v-card-title>
+                            <v-card-text>
+                                <v-radio-group v-model="selectedAnswer">
+                                    <v-radio v-for="(option, index) in currentQuestion.options" :key="index" :label="option" :value="index"></v-radio>
+                                </v-radio-group>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn @click="nextQuestion" :disabled="selectedAnswer === null" color="primary" block class="large">
+                                    คำถามถัดไป
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-container>
+
+            <v-container v-if="quizFinished" fluid>
+                <v-row style="margin-top: 10%; justify-content: center;">
+                    <v-col cols="12" md="8">
+                        <v-card class="score-card">
+                            <v-card-title class="text-center">ผลคะแนนของคุณ</v-card-title>
+                            <v-card-text class="text-center">
+                                <p class="display-1">{{ score }} / {{ quizData.length }}</p>
+                                <p>คุณทำแบบทดสอบเสร็จแล้ว!</p>
+                            </v-card-text>
+                            <v-card-actions>
+                                <v-btn @click="restartQuiz" color="primary" block class="large">
+                                    <v-icon left>mdi-restart</v-icon>
+                                    เริ่มใหม่
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-col>
+                </v-row>
+            </v-container>
+        </v-app>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vuetify@2.6.5/dist/vuetify.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            vuetify: new Vuetify(),
+            data: {
+                quizData: [], 
+                currentQuestionIndex: 0,
+                selectedAnswer: null,
+                score: 0,
+                quizStarted: false,
+                quizFinished: false
+            },
+            computed: {
+                currentQuestion() {
+                    return this.quizData[this.currentQuestionIndex];
+                }
+            },
+            methods: {
+
+                startQuiz() {
+                    fetch('quiz2.json')
+                        .then(response => response.json())
+                        .then(data => {
+                            this.quizData = data;
+                            this.quizStarted = true;
+                        })
+                        .catch(error => console.error('Error loading quiz data:', error));
+                },
+
+                nextQuestion() {
+                    if (this.selectedAnswer === this.currentQuestion.answer) {
+                        this.score++;
+                    }
+                    this.currentQuestionIndex++;
+                    this.selectedAnswer = null;
+
+                    if (this.currentQuestionIndex >= this.quizData.length) {
+                        this.quizFinished = true;
+                    }
+                },
+
+                restartQuiz() {
+                    this.currentQuestionIndex = 0;
+                    this.score = 0;
+                    this.selectedAnswer = null;
+                    this.quizFinished = false;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
