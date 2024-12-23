@@ -1,0 +1,123 @@
+[
+    {
+      "id": 1,
+      "question": "What is the capital of France?",
+      "options": ["Berlin", "Madrid", "Paris", "Rome"],
+      "correctAnswer": "Paris"
+    },
+    {
+      "id": 2,
+      "question": "Which planet is known as the Red Planet?",
+      "options": ["Earth", "Mars", "Jupiter", "Venus"],
+      "correctAnswer": "Mars"
+    },
+    {
+      "id": 3,
+      "question": "What is the square root of 16?",
+      "options": ["2", "4", "6", "8"],
+      "correctAnswer": "4"
+    },
+    {
+      "id": 4,
+      "question": "Who wrote 'Romeo and Juliet'?",
+      "options": ["Charles Dickens", "William Shakespeare", "Mark Twain", "J.K. Rowling"],
+      "correctAnswer": "William Shakespeare"
+    },
+    {
+      "id": 5,
+      "question": "What is the chemical symbol for water?",
+      "options": ["O2", "H2O", "CO2", "NaCl"],
+      "correctAnswer": "H2O"
+    },
+    {
+      "id": 6,
+      "question": "What is 5 + 7?",
+      "options": ["10", "11", "12", "13"],
+      "correctAnswer": "12"
+    },
+    {
+      "id": 7,
+      "question": "What is the largest mammal?",
+      "options": ["Elephant", "Blue Whale", "Giraffe", "Great White Shark"],
+      "correctAnswer": "Blue Whale"
+    },
+    {
+      "id": 8,
+      "question": "Which language is primarily spoken in Brazil?",
+      "options": ["Spanish", "Portuguese", "French", "English"],
+      "correctAnswer": "Portuguese"
+    },
+    {
+      "id": 9,
+      "question": "What is the main ingredient in sushi?",
+      "options": ["Bread", "Rice", "Potato", "Pasta"],
+      "correctAnswer": "Rice"
+    },
+    {
+      "id": 10,
+      "question": "What is the tallest mountain in the world?",
+      "options": ["K2", "Mount Everest", "Kangchenjunga", "Lhotse"],
+      "correctAnswer": "Mount Everest"
+    },
+    {
+      "id": 11,
+      "question": "Who painted the Mona Lisa?",
+      "options": ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"],
+      "correctAnswer": "Leonardo da Vinci"
+    },
+    {
+      "id": 12,
+      "question": "Which country is known as the Land of the Rising Sun?",
+      "options": ["China", "Thailand", "Japan", "Korea"],
+      "correctAnswer": "Japan"
+    },
+    {
+      "id": 13,
+      "question": "What is the smallest prime number?",
+      "options": ["1", "2", "3", "5"],
+      "correctAnswer": "2"
+    },
+    {
+      "id": 14,
+      "question": "Which ocean is the largest?",
+      "options": ["Atlantic", "Indian", "Arctic", "Pacific"],
+      "correctAnswer": "Pacific"
+    },
+    {
+      "id": 15,
+      "question": "What is the capital of Thailand?",
+      "options": ["Bangkok", "Hanoi", "Manila", "Jakarta"],
+      "correctAnswer": "Bangkok"
+    },
+    {
+      "id": 16,
+      "question": "What is 3 x 5?",
+      "options": ["15", "10", "20", "25"],
+      "correctAnswer": "15"
+    },
+    {
+      "id": 17,
+      "question": "Who is known as the Father of Computers?",
+      "options": ["Alan Turing", "Charles Babbage", "John von Neumann", "Steve Jobs"],
+      "correctAnswer": "Charles Babbage"
+    },
+    {
+      "id": 18,
+      "question": "Which element has the chemical symbol 'O'?",
+      "options": ["Oxygen", "Gold", "Silver", "Hydrogen"],
+      "correctAnswer": "Oxygen"
+    },
+    {
+      "id": 19,
+      "question": "What is the freezing point of water?",
+      "options": ["0°C", "32°C", "100°C", "-1°C"],
+      "correctAnswer": "0°C"
+    },
+    {
+      "id": 20,
+      "question": "What is the national sport of Japan?",
+      "options": ["Sumo Wrestling", "Baseball", "Soccer", "Karate"],
+      "correctAnswer": "Sumo Wrestling"
+    }
+  ]
+  

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="th">
+  <head>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+      body {
+        background: linear-gradient(to right, #6a11cb, #2575fc);
+        color: #fff;
+        font-family: Arial, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+      .card {
+        background: #fff;
+        color: #333;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        width: 100%;
+        max-width: 600px;
+        text-align: center;
+      }
+      .card-header {
+        background-color: #6a11cb;
+        color: #fff;
+        font-size: 1.5rem;
+        text-align: center;
+      }
+      .btn-primary {
+        background-color: #2575fc;
+        border-color: #2575fc;
+      }
+      .btn-primary:hover {
+        background-color: #1a5bb8;
+        border-color: #1a5bb8;
+      }
+      .btn-success {
+        background-color: #28a745;
+        border-color: #28a745;
+      }
+      .btn-success:hover {
+        background-color: #218838;
+        border-color: #218838;
+      }
+      .btn-secondary {
+        background-color: #6c757d;
+        border-color: #6c757d;
+      }
+      .btn-secondary:hover {
+        background-color: #5a6268;
+        border-color: #5a6268;
+      }
+      .form-check {
+        text-align: left;
+        margin: 0 auto;
+        max-width: 400px;
+      }
+      h1, h2 {
+        text-align: center;
+      }
+      p {
+        text-align: center;
+      }
+      .btn-container {
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+      }
+      .confetti {
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="myapp" class="container p-4"></div>
+    <script type="text/babel">
+      class App extends React.Component {
+        title = <div><b>Work3 :</b> แบบทดสอบ ด้วย ReactJS</div>;
+        footer = <div>By 663380486-1 ทวีพงศ์ เหลืองปฐมชัย <br/>
+           College of Computing, Khon Kaen University
+          </div>;
+
+        constructor() {
+          super();
+          this.state = {
+            startQuiz: false,
+            questions: [],
+            currentQuestionIndex: 0,
+            answers: {},
+            score: null,
+            showConfetti: false,
+          };
+        }
+
+        componentDidMount() {
+          fetch('quiz3.json')
+            .then((response) => response.json())
+            .then((data) => {
+              this.setState({ questions: data });
+            })
+            .catch((error) => console.error('Error loading questions:', error));
+        }
+
+        startQuiz = () => {
+          this.setState({ startQuiz: true });
+        };
+
+        handleAnswerChange = (e, questionId) => {
+          this.setState({
+            answers: {
+              ...this.state.answers,
+              [questionId]: e.target.value,
+            },
+          });
+        };
+
+        calculateScore = () => {
+          const { questions, answers } = this.state;
+          let totalScore = 0;
+          questions.forEach((question) => {
+            if (answers[question.id] === question.correctAnswer) {
+              totalScore += 1;
+            }
+          });
+          this.setState({ score: totalScore }, () => {
+            if (totalScore > 1) {
+              this.triggerConfetti();
+            }
+          });
+        };
+
+        triggerConfetti = () => {
+          this.setState({ showConfetti: true });
+          setTimeout(() => {
+            this.setState({ showConfetti: false });
+          }, 5000);
+        };
+
+        renderQuiz() {
+          const { questions, currentQuestionIndex, answers } = this.state;
+          const question = questions[currentQuestionIndex];
+
+          return (
+            <div>
+              <h2>{`Question ${currentQuestionIndex + 1} of ${questions.length}`}</h2>
+              <p>{question.question}</p>
+              {question.options.map((option, index) => (
+                <div key={index} className="form-check">
+                  <input
+                    className="form-check-input"
+                    type="radio"
+                    name={`question-${question.id}`}
+                    value={option}
+                    checked={answers[question.id] === option}
+                    onChange={(e) => this.handleAnswerChange(e, question.id)}
+                  />
+                  <label className="form-check-label">
+                    {option}
+                  </label>
+                </div>
+              ))}
+              <div className="btn-container mt-3">
+                {currentQuestionIndex < questions.length - 1 ? (
+                  <button
+                    className="btn btn-primary"
+                    onClick={() =>
+                      this.setState((prevState) => ({ currentQuestionIndex: prevState.currentQuestionIndex + 1 }))
+                    }
+                    disabled={!answers[question.id]}
+                  >
+                    Next
+                  </button>
+                ) : (
+                  <button
+                    className="btn btn-success"
+                    onClick={this.calculateScore}
+                    disabled={!answers[question.id]}
+                  >
+                    Submit
+                  </button>
+                )}
+              </div>
+            </div>
+          );
+        }
+
+        renderScore() {
+          const { score, questions, showConfetti } = this.state;
+          return (
+            <div>
+              <h1>Quiz Completed!</h1>
+              <p>{`Your score: ${score} out of ${questions.length}`}</p>
+              <button className="btn btn-secondary" onClick={() => window.location.reload()}>Restart</button>
+            </div>
+          );
+        }
+
+        render() {
+          const { startQuiz, score, questions } = this.state;
+
+          if (questions.length === 0) {
+            return <div>Loading questions...</div>;
+          }
+
+          return (
+            <div className="card mx-auto">
+              <div className="card-header">{this.title}</div>
+              <div className="card-body">
+                {!startQuiz ? (
+                  <button className="btn btn-primary" onClick={this.startQuiz}>Start Quiz</button>
+                ) : score === null ? (
+                  this.renderQuiz()
+                ) : (
+                  this.renderScore()
+                )}
+              </div>
+              <div className="card-footer">{this.footer}</div>
+            </div>
+          );
+        }
+      }
+
+      const container = document.getElementById('myapp');
+      const root = ReactDOM.createRoot(container);
+      root.render(<App />);
+    </script>
+  </body>
+</html>
